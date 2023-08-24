@@ -1,13 +1,17 @@
 package main
 
 import (
-	"TODO_API/pkg/handler"
+	handler "TODO_API/pkg/handler"
+	repository "TODO_API/pkg/repository"
+	service "TODO_API/pkg/service"
 	todo "TODO_API/smth"
 	"log"
 )
 
 func main() {
-	handlers := new(handler.Handler)
+	repos := repository.NewRepository()
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(todo.Server)
 	if err := srv.Run("8080", handlers.InitRoutes()); err != nil {
